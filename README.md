@@ -1,4 +1,4 @@
-# Weather App 
+# Weatherus 
 
 Simply a weather forecast app.
 Using API: https://www.weatherbit.io/api
