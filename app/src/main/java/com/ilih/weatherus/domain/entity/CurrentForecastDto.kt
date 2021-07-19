@@ -1,4 +1,4 @@
-package com.ilih.weatherus.domain.dto
+package com.ilih.weatherus.domain.entity
 
 data class CurrentForecastDto(
         val temperature: Float,
