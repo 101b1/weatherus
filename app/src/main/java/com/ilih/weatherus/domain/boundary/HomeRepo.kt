@@ -3,12 +3,12 @@ package com.ilih.weatherus.domain.boundary
 import com.ilih.weatherus.domain.entity.CurrentForecastDto
 import com.ilih.weatherus.domain.entity.DailyForecastDto
 import com.ilih.weatherus.domain.entity.HourlyForecastDto
-import com.ilih.weatherus.domain.usecase.location.ForecastResult
+import com.ilih.weatherus.domain.usecase.home.HomeForecastResult
 import io.reactivex.Single
 
-interface ForecastRepo {
+interface HomeRepo {
 
-    fun getLocationDto(cityId: Int): Single<ForecastResult>
+    fun getHomenDto(cityId: Int): Single<HomeForecastResult>
 
     fun getCurrentForecast(cityId: Int): Single<CurrentForecastDto>
 

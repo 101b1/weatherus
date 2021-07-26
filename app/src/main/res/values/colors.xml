@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="weatherus_dark">#081B24</color>
+    <color name="weatherus_dark_var">#1A2833</color>
+    <color name="weatherus_mid">#152C39</color>
+    <color name="weatherus_light">#6B8C9C</color>
+    <color name="weatherus_highlight">#622E52</color>
 </resources>
