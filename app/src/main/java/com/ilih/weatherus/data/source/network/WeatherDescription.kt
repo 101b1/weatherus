@@ -2,7 +2,7 @@ package com.ilih.weatherus.data.source.network
 
 import com.google.gson.annotations.SerializedName
 
-data class Weather(
+data class WeatherDescription(
     @SerializedName("icon")
     val iconID: String,
     @SerializedName("code")

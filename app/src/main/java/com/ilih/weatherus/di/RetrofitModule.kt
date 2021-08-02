@@ -1,17 +1,21 @@
-package com.ilih.weatherus.data.source.network
+package com.ilih.weatherus.di
 
+import dagger.Module
+import dagger.Provides
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 
 const val BASE_URL = "https://api.weatherbit.io/v2.0/"
 const val KEY = "6a107a0b6f0c45f992cec8593bbf1271"
 
-object NetworkFactory {
+@Module
+object RetrofitModule {
 
     private val apiKeyInterceptor = Interceptor { chain ->
         val original: Request = chain.request()
@@ -26,7 +30,10 @@ object NetworkFactory {
         chain.proceed(request)
     }
 
-    private fun getClient() =
+
+    @Provides
+    @Singleton
+    fun getClient() =
         OkHttpClient.Builder()
             .connectTimeout(1, TimeUnit.MINUTES)
             .writeTimeout(1, TimeUnit.MINUTES)
@@ -35,13 +42,12 @@ object NetworkFactory {
             .addInterceptor(apiKeyInterceptor)
             .build()
 
-    private fun getRetrofit() = Retrofit.Builder()
+    @Provides
+    @Singleton
+    fun getRetrofit() = Retrofit.Builder()
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .baseUrl(BASE_URL)
-
-    fun getAPI() =
-        getRetrofit().client(getClient()).build()
-            .create(WeatherIO::class.java)
+        .build()
 
 }

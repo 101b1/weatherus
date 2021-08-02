@@ -4,27 +4,27 @@ import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface WeatherIO: API {
+interface WeatherAPI {
 
     @GET("forecast/hourly")
-    override fun getHourlyForecast(
+    fun getHourlyForecast(
         @Query("city_id") cityID: Int
     ): Single<HourlyForecastResponse>
 
     @GET("forecast/daily")
-    override fun getDailyForecast(
+    fun getDailyForecast(
         @Query("city_id") cityID: Int
     ): Single<DailyForecastResponse>
 
     @GET("current")
-    override fun getCurrentWeather(
+    fun getCurrentWeather(
         @Query("city_id") cityID: Int
-    ): Single<CurrentForecastResponse>
+    ): Single<CurrentWeatherResponse>
 
     @GET("current")
-    override fun getCurrentWeather(
+    fun getCurrentWeather(
         @Query("lat") lat: Float,
         @Query("lon") lon: Float
-    ): Single<CurrentForecastResponse>
+    ): Single<CurrentWeatherResponse>
 
 }

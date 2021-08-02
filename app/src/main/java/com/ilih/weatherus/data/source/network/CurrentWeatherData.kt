@@ -1,6 +1,5 @@
 package com.ilih.weatherus.data.source.network
 
-import androidx.annotation.StringRes
 import com.google.gson.annotations.SerializedName
 
 data class CurrentWeatherData(
@@ -37,7 +36,7 @@ data class CurrentWeatherData(
     @SerializedName("dewpt")
     val dewPoint: Float,
     @SerializedName("weather")
-    val weather: Weather,
+    val weather: WeatherDescription,
     @SerializedName("uv")
     val uvIndex: Int,
     @SerializedName("aqi")

@@ -1,6 +1,6 @@
 package com.ilih.weatherus.domain.entity
 
-data class CurrentForecastDto(
+data class CurrentWeatherDto(
         val temperature: Float,
         val feelsLikeTemp: Float,
         val pressure: Float,
