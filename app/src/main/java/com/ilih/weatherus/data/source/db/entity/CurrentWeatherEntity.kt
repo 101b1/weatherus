@@ -41,7 +41,9 @@ data class CurrentWeatherEntity(
     @ColumnInfo(name = "humidity")
     val humidity: String,
     @ColumnInfo(name = "timestamp")
-    val timestamp: Long
+    val timestamp: Long,
+    val homeParent: Int,
+    val favouriteParent: Int
 )
 
 fun CurrentWeatherEntity.toDto() =
@@ -63,6 +65,5 @@ fun CurrentWeatherEntity.toDto() =
             countryCode = countryCode,
             humidity = humidity,
             timestamp = timestamp
-
         )
     }

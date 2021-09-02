@@ -19,7 +19,8 @@ data class HourlyForecastEntity(
     @ColumnInfo(name = "weather_desc")
     val weatherDesc: String,
     @ColumnInfo(name = "timestamp")
-    val localTimestamp: String
+    val localTimestamp: String,
+    val homeParent: Int
 )
 
 fun HourlyForecastEntity.toDto() =
