@@ -7,11 +7,19 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.ilih.weatherus.di.AppComponent
+import com.ilih.weatherus.di.ContextComponent
+import com.ilih.weatherus.di.ContextModule
 
 class MainActivity : AppCompatActivity() {
 
+    companion object{
+        private var contextComponent: ContextComponent? = null
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        getContextComponent().inject(this)
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
@@ -22,5 +30,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    fun getContextComponent(): ContextComponent{
+        return MainActivity.contextComponent ?: ContextComponent.create(this).also{
+           MainActivity.contextComponent = it
+        }
     }
 }

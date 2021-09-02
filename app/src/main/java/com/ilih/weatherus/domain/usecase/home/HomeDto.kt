@@ -6,6 +6,6 @@ import com.ilih.weatherus.domain.entity.HourlyForecastDto
 
 data class HomeDto(
     val currentWeather: CurrentWeatherDto,
-    val hourlyForecast: HourlyForecastDto,
-    val dailyForecast: DailyForecastDto
+    val hourlyForecast: ArrayList<HourlyForecastDto>,
+    val dailyForecast: ArrayList<DailyForecastDto>
 )

@@ -5,6 +5,8 @@ import com.ilih.weatherus.data.source.network.WeatherAPI
 import com.ilih.weatherus.domain.boundary.WeatherRepo
 import com.ilih.weatherus.domain.usecase.home.HomeInteractor
 import com.ilih.weatherus.domain.usecase.home.HomeInteractorImpl
+import com.ilih.weatherus.ui.home.HomeViewModel
+import com.ilih.weatherus.ui.home.HomeViewModelImpl
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -24,7 +26,11 @@ abstract class WeatherModule {
         }
     }
 
-    //TODO Here to bind HomeModelView
+
+    @Binds
+    @Reusable
+    abstract fun bindsHomeViewModel(homeViewModelImpl: HomeViewModelImpl): HomeViewModel
+
 
     @Binds
     @Reusable

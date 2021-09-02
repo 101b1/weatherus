@@ -5,6 +5,8 @@ import com.ilih.weatherus.App
 import com.ilih.weatherus.data.source.db.WeatherDB
 import com.ilih.weatherus.data.source.db.dao.CurrentWeatherDao
 import com.ilih.weatherus.di.AppComponent.Companion.create
+import com.ilih.weatherus.ui.home.HomeView
+import com.ilih.weatherus.ui.home.HomeViewImpl
 import dagger.Component
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -14,11 +16,9 @@ import javax.inject.Singleton
 interface AppComponent {
 
     companion object{
-
         fun create(appContext: Context): AppComponent{
             return DaggerAppComponent.builder().appContextModule(AppContextModule(appContext)).build()
         }
-
     }
 
     fun getRetrofit(): Retrofit
@@ -28,6 +28,4 @@ interface AppComponent {
     fun getAppContext(): Context
 
     fun inject(app: App)
-
-
 }

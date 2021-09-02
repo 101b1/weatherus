@@ -13,9 +13,7 @@ fun Any.log(message: String){
 open class App: Application() {
 
     companion object{
-
         private var appComponent: AppComponent? = null
-
     }
 
     override fun onCreate() {

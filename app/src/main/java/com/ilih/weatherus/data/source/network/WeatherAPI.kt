@@ -23,6 +23,12 @@ interface WeatherAPI {
 
     @GET("current")
     fun getCurrentWeather(
+        @Query("city") cityName: String,
+        @Query("country") countryCode: String
+    ): Single<CurrentWeatherResponse>
+
+    @GET("current")
+    fun getCurrentWeather(
         @Query("lat") lat: Float,
         @Query("lon") lon: Float
     ): Single<CurrentWeatherResponse>

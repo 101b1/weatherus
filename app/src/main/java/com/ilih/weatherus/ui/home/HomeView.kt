@@ -1,4 +1,13 @@
 package com.ilih.weatherus.ui.home
 
-interface HomeView {
+import com.ilih.weatherus.ui.common.BaseView
+
+interface HomeView: BaseView {
+
+    fun refresh()
+
+    interface Listener{
+        fun onRefreshClicked()
+    }
+
 }

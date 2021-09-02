@@ -7,6 +7,10 @@ plugins {
 android {
     compileSdkVersion 29
 
+    buildFeatures {
+        viewBinding true
+    }
+
     defaultConfig {
         applicationId "com.ilih.weatherus"
         minSdkVersion 23
@@ -30,6 +34,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+
 }
 
 dependencies {
