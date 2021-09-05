@@ -31,7 +31,7 @@ fun DailyForecastData.toDto() =
         )
     }
 
-fun DailyForecastData.toEntity() =
+fun DailyForecastData.toEntity(parentId: Long) =
     let {
         DailyForecastEntity(
             null,
@@ -40,6 +40,7 @@ fun DailyForecastData.toEntity() =
             weatherIcon = weatherIcon,
             weatherCode = weatherCode,
             weatherDesc = weatherDesc,
-            timestamp = timestamp
+            timestamp = timestamp,
+            homeParent = parentId
         )
     }

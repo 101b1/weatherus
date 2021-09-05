@@ -22,7 +22,7 @@ data class DailyForecastEntity(
     val weatherDesc: String,
     @ColumnInfo(name = "timestamp")
     val timestamp: Long,
-    val homeParent: Int
+    val homeParent: Long
 )
 
 fun DailyForecastEntity.toDto() =

@@ -2,14 +2,12 @@ package com.ilih.weatherus.ui.home
 
 import android.content.Context
 import android.view.animation.AnimationUtils
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.RecyclerView
 import com.ilih.weatherus.R
 import com.ilih.weatherus.databinding.FragmentHomeBinding
-import com.ilih.weatherus.domain.usecase.home.Error
+import com.ilih.weatherus.domain.boundary.HomeError
+import com.ilih.weatherus.domain.boundary.HomeSuccess
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
@@ -31,33 +29,39 @@ class HomeViewImpl(
 
     override fun initViews() {
         viewModel.data.observe(lifecycleOwner) {
-            binding.imageHomeRefresh.clearAnimation()
-            binding.imageHomeRefresh.isClickable = true
-            if (binding.recyclerHomeDaily.adapter == null) {
-                binding.recyclerHomeDaily.adapter = DailyForecastAdapter(it.dailyForecast)
-            } else {
-                (binding.recyclerHomeDaily.adapter as DailyForecastAdapter).updateData(it.dailyForecast)
-            }
-            if (binding.recyclerHomeHourly.adapter == null){
-                binding.recyclerHomeHourly.adapter = HourlyForecastAdapter(it.hourlyForecast)
-            } else {
-                (binding.recyclerHomeHourly.adapter as HourlyForecastAdapter).updateData(it.hourlyForecast)
-            }
-            it.currentWeather.apply {
-                binding.textHomeCity.text = cityName
-                binding.textHomeTemp.text = temperature.roundToInt().toString()
-                binding.textHomeWeather.text = weatherDesc
-                binding.textHomeHum.text = humidity
-                binding.textHomePressure.text = pressure.roundToInt().toString()
-                binding.textHomeWind.text = windSpeed.roundToInt().toString()
-                binding.textHomeUpdated.text = SimpleDateFormat("dd.MM.yy HH:mm").format(Date(timestamp))
+            when (it){
+                is HomeSuccess -> {
+                    if (binding.recyclerHomeDaily.adapter == null) {
+                        binding.recyclerHomeDaily.adapter = DailyForecastAdapter(it.homeForecast.dailyForecast)
+                    } else {
+                        (binding.recyclerHomeDaily.adapter as DailyForecastAdapter).updateData(it.homeForecast.dailyForecast)
+                    }
+                    if (binding.recyclerHomeHourly.adapter == null){
+                        binding.recyclerHomeHourly.adapter = HourlyForecastAdapter(it.homeForecast.hourlyForecast)
+                    } else {
+                        (binding.recyclerHomeHourly.adapter as HourlyForecastAdapter).updateData(it.homeForecast.hourlyForecast)
+                    }
+                    it.homeForecast.currentWeather.apply {
+                        binding.textHomeCity.text = cityName
+                        binding.textHomeTemp.text = temperature.roundToInt().toString()
+                        binding.textHomeWeather.text = weatherDesc
+                        binding.textHomeHum.text = humidity
+                        binding.textHomePressure.text = pressure.roundToInt().toString()
+                        binding.textHomeWind.text = windSpeed.roundToInt().toString()
+                        binding.textHomeUpdated.text = SimpleDateFormat("dd.MM.yy HH:mm").format(Date(timestamp))
+                    }
+                }
+                is HomeError -> {
+                    Toast.makeText(context, context.getString(R.string.data_download_error), Toast.LENGTH_SHORT).show()
+                }
             }
         }
-        viewModel.status.observe(lifecycleOwner){
-            if (it is Error){
-                binding.imageHomeRefresh.clearAnimation()
-                binding.imageHomeRefresh.isClickable = true
-                Toast.makeText(context, it.errorMessage, Toast.LENGTH_SHORT).show()
+        viewModel.status.observe(lifecycleOwner) {
+            when (it) {
+                is DONE -> {
+                    binding.imageHomeRefresh.clearAnimation()
+                    binding.imageHomeRefresh.isClickable = true
+                }
             }
         }
     }

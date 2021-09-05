@@ -8,8 +8,8 @@ import com.ilih.weatherus.domain.entity.CurrentWeatherDto
 @Entity(tableName = "current_weather")
 data class CurrentWeatherEntity(
     @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name = "id")  // id is City,CountryCode
-    val id: String,
+    @ColumnInfo(name = "id")
+    val id: Long?,
     @ColumnInfo(name = "temperature")
     val temperature: Float,
     @ColumnInfo(name = "apparent_temp")
@@ -42,8 +42,7 @@ data class CurrentWeatherEntity(
     val humidity: String,
     @ColumnInfo(name = "timestamp")
     val timestamp: Long,
-    val homeParent: Int,
-    val favouriteParent: Int
+    val homeParent: Long
 )
 
 fun CurrentWeatherEntity.toDto() =

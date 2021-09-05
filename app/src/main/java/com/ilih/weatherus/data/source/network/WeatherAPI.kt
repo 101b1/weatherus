@@ -8,17 +8,17 @@ interface WeatherAPI {
 
     @GET("forecast/hourly")
     fun getHourlyForecast(
-        @Query("city_id") cityID: Int
+        @Query("city_id") cityID: Long
     ): Single<HourlyForecastResponse>
 
     @GET("forecast/daily")
     fun getDailyForecast(
-        @Query("city_id") cityID: Int
+        @Query("city_id") cityID: Long
     ): Single<DailyForecastResponse>
 
     @GET("current")
     fun getCurrentWeather(
-        @Query("city_id") cityID: Int
+        @Query("city_id") cityID: Long
     ): Single<CurrentWeatherResponse>
 
     @GET("current")

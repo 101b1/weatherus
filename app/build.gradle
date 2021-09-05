@@ -12,6 +12,13 @@ android {
     }
 
     defaultConfig {
+
+        kapt{
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
+        
         applicationId "com.ilih.weatherus"
         minSdkVersion 23
         targetSdkVersion 29

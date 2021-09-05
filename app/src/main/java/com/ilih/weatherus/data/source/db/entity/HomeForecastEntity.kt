@@ -1,11 +1,13 @@
 package com.ilih.weatherus.data.source.db.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "home_forecast")
 data class HomeForecastEntity(
     @PrimaryKey(autoGenerate = false)
-    val cityId: Int,
-    val location: String
+    @ColumnInfo(name = "city_id")
+    val cityId: Long,
+//    val location: String
 )

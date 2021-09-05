@@ -1,13 +1,13 @@
 package com.ilih.weatherus.ui.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ilih.weatherus.domain.boundary.WeatherRepo
+import com.ilih.weatherus.domain.boundary.HomeEmpty
+import com.ilih.weatherus.domain.boundary.HomeError
+import com.ilih.weatherus.domain.boundary.HomeForecastResult
+import com.ilih.weatherus.domain.boundary.HomeSuccess
 import com.ilih.weatherus.domain.usecase.home.HomeDto
-import com.ilih.weatherus.domain.usecase.home.HomeForecastResult
 import com.ilih.weatherus.domain.usecase.home.HomeInteractor
-import com.ilih.weatherus.domain.usecase.home.Success
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
@@ -19,25 +19,30 @@ class HomeViewModelImpl
 @Inject
 constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel, HomeView.Listener {
 
-    private val _data = MutableLiveData<HomeDto>()
+    private val _data = MutableLiveData<HomeForecastResult>()
     val data = _data
 
-    private val _status = MutableLiveData<HomeForecastResult>()
+    private val _status = MutableLiveData<LoadingStatus>()
     val status = _status
-
-    private val _loadingStatus = MutableLiveData<LoadingStatus>()
-    val loadingStatus = _loadingStatus
 
     private val disposable: Disposable
 
     init {
         disposable = interactor.getObservable()
-            .doOnSubscribe { _loadingStatus.value = IN_PROCESS }
+            .doOnSubscribe { _status.value = IN_PROCESS }
             .subscribe { fetched ->
-                _loadingStatus.value = DONE
                 when (fetched) {
-                    is Success -> _data.value = fetched.homeForecast
-                    is Error -> _status.value = fetched
+                    is HomeSuccess -> {
+                        _status.value = DONE
+                        _data.value = fetched
+                    }
+                    is HomeError -> {
+                        _status.value = DONE
+                        _data.value = fetched
+                    }
+                    is HomeEmpty ->{
+                        _data.value = fetched
+                    }
                 }
             }
     }

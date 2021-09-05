@@ -1,6 +1,7 @@
 package com.ilih.weatherus.data.source.network
 
 import com.google.gson.annotations.SerializedName
+import com.ilih.weatherus.data.source.db.entity.HourlyForecastEntity
 
 data class HourlyForecastData(
     @SerializedName("temperature")
@@ -14,3 +15,14 @@ data class HourlyForecastData(
     @SerializedName("timestamp")
     val localTimestamp: String
 )
+
+fun HourlyForecastData.toEntity(parentId: Long) =
+    HourlyForecastEntity(
+        id = null,
+        temperature = temperature,
+        weatherIcon = weatherIcon,
+        weatherCode = weatherCode,
+        weatherDesc = weatherDesc,
+        localTimestamp = localTimestamp,
+        homeParent = parentId
+    )

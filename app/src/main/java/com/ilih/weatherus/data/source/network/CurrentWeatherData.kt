@@ -70,10 +70,10 @@ data class CurrentWeatherData(
 )
 
 
-fun CurrentWeatherData.toEntity() =
+fun CurrentWeatherData.toEntity(parentId: Long) =
     let{
         CurrentWeatherEntity(
-            "$cityName,$countryCode",
+            null,
             temperature = temp,
             feelsLikeTemp = apparentTemp,
             pressure = pressure,
@@ -90,6 +90,7 @@ fun CurrentWeatherData.toEntity() =
             countryCode = countryCode,
             humidity = relativeHumidity.toString(),
             timestamp = timestamp,
+            homeParent = parentId
         )
     }
 fun CurrentWeatherData.toDto() =

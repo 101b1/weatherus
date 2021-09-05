@@ -5,9 +5,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ilih.weatherus.R
 import com.ilih.weatherus.domain.entity.DailyForecastDto
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -15,6 +20,8 @@ import kotlin.math.roundToInt
 
 class DailyForecastAdapter(private val itemList: ArrayList<DailyForecastDto>) :
     RecyclerView.Adapter<DailyForecastAdapter.ViewHolder>() {
+
+    private val diffUtilScope = CoroutineScope(Dispatchers.Default)
 
     inner class ViewHolder(private val itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -33,8 +40,23 @@ class DailyForecastAdapter(private val itemList: ArrayList<DailyForecastDto>) :
         }
     }
 
-    fun updateData(newList: ArrayList<DailyForecastDto>){
+    private fun calculateDiffAsync(callback: DailyForecastAdapter.DailyDiffUtilCallback) =
+        diffUtilScope.async {
+            DiffUtil.calculateDiff(callback)
+        }
 
+    fun setData(newList: ArrayList<DailyForecastDto>) {
+        itemList.clear()
+        itemList.addAll(newList)
+    }
+
+    fun updateData(newList: ArrayList<DailyForecastDto>) {
+        val diffUtilCallback = DailyDiffUtilCallback(itemList, newList)
+        runBlocking {
+            val result = calculateDiffAsync(diffUtilCallback).await()
+            setData(newList)
+            result.dispatchUpdatesTo(this@DailyForecastAdapter)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -48,5 +70,10 @@ class DailyForecastAdapter(private val itemList: ArrayList<DailyForecastDto>) :
     }
 
     override fun getItemCount() = itemList.size
+
+    inner class DailyDiffUtilCallback(
+        private val oldList: ArrayList<DailyForecastDto>,
+        private val newList: ArrayList<DailyForecastDto>,
+    ) : BaseDiffUtilCallback<DailyForecastDto>(oldList, newList)
 
 }
