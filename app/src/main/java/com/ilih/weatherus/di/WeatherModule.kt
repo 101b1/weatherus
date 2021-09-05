@@ -26,11 +26,9 @@ abstract class WeatherModule {
         }
     }
 
-
     @Binds
     @Reusable
     abstract fun bindsHomeViewModel(homeViewModelImpl: HomeViewModelImpl): HomeViewModel
-
 
     @Binds
     @Reusable

@@ -45,6 +45,7 @@ constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel
                     }
                 }
             }
+        interactor.nextForecast()
     }
 
     override fun onRefreshClicked() {
