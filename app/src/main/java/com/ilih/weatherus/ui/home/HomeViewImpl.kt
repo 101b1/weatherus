@@ -14,7 +14,7 @@ import kotlin.math.roundToInt
 
 class HomeViewImpl(
     private val binding: FragmentHomeBinding,
-    private val viewModel: HomeViewModelImpl,
+    private val viewModel: HomeViewModel,
     private val lifecycleOwner: LifecycleOwner,
     private val context: Context
 ) : HomeView {
@@ -28,7 +28,7 @@ class HomeViewImpl(
     }
 
     override fun initViews() {
-        viewModel.data.observe(lifecycleOwner) {
+        viewModel.getData().observe(lifecycleOwner) {
             when (it){
                 is HomeSuccess -> {
                     if (binding.recyclerHomeDaily.adapter == null) {
@@ -56,7 +56,7 @@ class HomeViewImpl(
                 }
             }
         }
-        viewModel.status.observe(lifecycleOwner) {
+        viewModel.getStatus().observe(lifecycleOwner) {
             when (it) {
                 is DONE -> {
                     binding.imageHomeRefresh.clearAnimation()

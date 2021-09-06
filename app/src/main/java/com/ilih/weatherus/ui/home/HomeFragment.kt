@@ -16,7 +16,7 @@ import javax.inject.Inject
 class HomeFragment : Fragment() {
 
     @Inject
-    lateinit var homeViewModel: HomeViewModelImpl
+    lateinit var homeViewModel: HomeViewModel
     lateinit var homeView: HomeView
 
     private var _binding: FragmentHomeBinding? = null

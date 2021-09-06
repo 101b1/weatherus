@@ -18,10 +18,10 @@ interface BaseDao<T> {
     fun insertAll(args: List<T>)
 
     @Update
-    fun update(arg: T): Long
+    fun update(arg: T): Int
 
     @Update
-    fun updateRx(arg: T): Single<Long>
+    fun updateRx(arg: T): Single<Int>
 
     @Delete
     fun delete(arg: T)

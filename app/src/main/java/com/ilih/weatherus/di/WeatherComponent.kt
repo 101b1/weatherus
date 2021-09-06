@@ -1,6 +1,7 @@
 package com.ilih.weatherus.di
 
 import androidx.fragment.app.Fragment
+import com.ilih.weatherus.ui.home.HomeFragment
 import dagger.Component
 
 
@@ -16,8 +17,7 @@ interface WeatherComponent {
 
     }
 
-
-    fun injectHomeFragment(fragment: Fragment)
+    fun injectHomeFragment(fragment: HomeFragment)
 
     //TODO Here to inject other fragments
 

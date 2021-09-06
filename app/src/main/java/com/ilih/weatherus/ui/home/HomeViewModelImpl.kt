@@ -1,5 +1,6 @@
 package com.ilih.weatherus.ui.home
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ilih.weatherus.domain.boundary.HomeEmpty
@@ -55,5 +56,13 @@ constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel
     override fun onCleared() {
         super.onCleared()
         disposable.dispose()
+    }
+
+    override fun getData(): LiveData<HomeForecastResult> {
+        return data
+    }
+
+    override fun getStatus(): LiveData<LoadingStatus> {
+        return status
     }
 }

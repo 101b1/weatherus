@@ -8,8 +8,6 @@ import io.reactivex.Single
 
 @Dao
 interface DailyForecastDao: BaseDao<DailyForecastEntity> {
-    @Query("SELECT * FROM daily_forecast WHERE city_name=:name LIMIT 1")
-    fun getCityForecast(name: String): Single<DailyForecastEntity>
 
     @Query("SELECT * FROM daily_forecast WHERE homeParent=:cityId")
     fun getCityForecast(cityId: Long): Observable<List<DailyForecastEntity>>
