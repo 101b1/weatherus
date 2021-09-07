@@ -13,7 +13,7 @@ data class CurrentWeatherEntity(
     @ColumnInfo(name = "temperature")
     val temperature: Float,
     @ColumnInfo(name = "apparent_temp")
-    val feelsLikeTemp: Int,
+    val feelsLikeTemp: Float,
     @ColumnInfo(name = "pressure")
     val pressure: Float,
     @ColumnInfo(name = "weather_icon")
@@ -31,9 +31,9 @@ data class CurrentWeatherEntity(
     @ColumnInfo(name = "sunset_time")
     val sunsetTime: String,
     @ColumnInfo(name = "cloud_coverage")
-    val cloudCoverage: Int,
+    val cloudCoverage: Float,
     @ColumnInfo(name = "uv_index")
-    val uvIndex: Int,
+    val uvIndex: Float,
     @ColumnInfo(name = "city_name")
     val cityName: String,
     @ColumnInfo(name = "country_code")

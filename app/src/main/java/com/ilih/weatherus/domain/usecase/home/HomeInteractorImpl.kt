@@ -30,13 +30,20 @@ class HomeInteractorImpl
         }
         repo.getHomeDto(homeCity)
             .subscribeOn(Schedulers.io())
+            .doOnSubscribe{this.log("SUBSCRIBED TO gethomedto")}
             .onErrorReturn {
                 it.message?.let { this.log(it) }
                 HomeError
             }
-            .subscribe {
-                homeForecastSubject.onNext(it)
-            }
+            .subscribe (
+                {
+                    homeForecastSubject.onNext(it)
+                },
+                {
+                    this.log(it.message!!)
+                    HomeError
+                }
+        )
     }
 
     override fun getObservable(): Observable<HomeForecastResult> = homeForecastSubject

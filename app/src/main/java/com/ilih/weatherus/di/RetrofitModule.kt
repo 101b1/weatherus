@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 
 const val BASE_URL = "https://api.weatherbit.io/v2.0/"
-const val KEY = "6a107a0b6f0c45f992cec8593bbf1271"
+    const val KEY = "6a107a0b6f0c45f992cec8593bbf1271"
 
 @Module
 object RetrofitModule {
@@ -39,7 +39,7 @@ object RetrofitModule {
             .writeTimeout(1, TimeUnit.MINUTES)
             .readTimeout(1, TimeUnit.MINUTES)
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addInterceptor(apiKeyInterceptor)
+//            .addInterceptor(apiKeyInterceptor)
             .build()
 
     @Provides

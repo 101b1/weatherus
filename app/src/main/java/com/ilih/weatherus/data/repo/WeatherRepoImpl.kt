@@ -2,16 +2,20 @@ package com.ilih.weatherus.data.repo
 
 import com.ilih.weatherus.data.source.db.WeatherDB
 import com.ilih.weatherus.data.source.db.entity.toDto
-import com.ilih.weatherus.data.source.network.WeatherAPI
-import com.ilih.weatherus.data.source.network.toEntity
+import com.ilih.weatherus.data.source.network.*
 import com.ilih.weatherus.domain.boundary.*
 import com.ilih.weatherus.domain.entity.CurrentWeatherDto
 import com.ilih.weatherus.domain.entity.DailyForecastDto
 import com.ilih.weatherus.domain.entity.HourlyForecastDto
 import com.ilih.weatherus.domain.usecase.home.HomeDto
 import com.ilih.weatherus.log
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.reactivex.SingleSource
+import io.reactivex.functions.Function
+import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class WeatherRepoImpl
@@ -23,27 +27,45 @@ class WeatherRepoImpl
     private fun getCWCache(cityId: Long) =
         db.currentWeatherDao()
             .getHomeWeather(cityId)
+            .onErrorReturn {
+                null
+            }
+            .subscribeOn(Schedulers.io())
 
     private fun getDFCache(cityId: Long) =
         db.dailyForecastDao()
             .getCityForecast(cityId)
+            .onErrorReturn {
+                null
+            }
+            .subscribeOn(Schedulers.io())
 
     private fun getHFCache(cityId: Long) =
         db.hourlyForecastDao()
             .getCityForecast(cityId)
+            .onErrorReturn {
+                null
+            }
+            .subscribeOn(Schedulers.io())
 
     private fun getCWNetwork(cityId: Long) =
         api.getCurrentWeather(cityId)
+            .delay(2000, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
 
     private fun getDFNetwork(cityId: Long) =
         api.getDailyForecast(cityId)
+            .delay(2000, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
 
     private fun getHFNetwork(cityId: Long) =
         api.getHourlyForecast(cityId)
+            .delay(2000, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.io())
 
 
-    private fun getHomeForecastCache(cityId: Long): Observable<HomeForecastResult> {
-        return Observable.zip(
+    private fun getHomeForecastCache(cityId: Long): Single<HomeForecastResult> {
+        return Single.zip(
             getCWCache(cityId),
             getDFCache(cityId),
             getHFCache(cityId),
@@ -60,16 +82,19 @@ class WeatherRepoImpl
                     ) as HomeForecastResult
             }
         ).doOnError { this.log("HomeForecast cache error: ${it.message}") }
-            .onErrorReturn { HomeError as HomeForecastResult }
+            .onErrorReturnItem (
+                HomeEmpty as HomeForecastResult
+        )
+            .subscribeOn(Schedulers.io())
     }
 
-    private fun getHomeForecastNetwork(cityId: Long): Observable<HomeForecastResult> {
+    private fun getHomeForecastNetwork(cityId: Long): Single<HomeForecastResult> {
         return Single.zip(
             getCWNetwork(cityId),
             getDFNetwork(cityId),
             getHFNetwork(cityId),
-            { current, daily, hourly ->
-                val currentEntity = current.data.toEntity(cityId)
+            { current: CurrentWeatherResponse, daily: DailyForecastResponse, hourly: HourlyForecastResponse ->
+                val currentEntity = current.data[0].toEntity(cityId)
                 val dailyList = daily.data.map { item -> item.toEntity(cityId) }
                 val hourlyList = hourly.data.map { item -> item.toEntity(cityId) }
                 db.currentWeatherDao().deleteAllForCity(cityId)
@@ -85,16 +110,19 @@ class WeatherRepoImpl
                         ArrayList(dailyList.map { item -> item.toDto() })
                     )
                 ) as HomeForecastResult
-            }
-        ).toObservable()
+            }).doOnError {
+                this.log(it.stackTraceToString())
+        }
+            .subscribeOn(Schedulers.io())
     }
 
 
     override fun getHomeDto(cityId: Long): Observable<HomeForecastResult> {
-        return Observable.concat(
+        return Single.concat(
             getHomeForecastCache(cityId),
             getHomeForecastNetwork(cityId)
-        )
+        ).toObservable()
+            .subscribeOn(Schedulers.io())
     }
 
     // Not used

@@ -40,7 +40,9 @@ class HomeFragment : Fragment() {
             homeViewModel,
             this,
             (requireActivity() as MainActivity).getContextComponent().getContext()
-        )
+        ).apply {
+            onFinishInflate(homeViewModel.getListener())
+        }
         return view
     }
 

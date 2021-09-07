@@ -4,7 +4,7 @@ import com.ilih.weatherus.data.source.network.CurrentWeatherData
 
 data class CurrentWeatherDto(
         val temperature: Float,
-        val feelsLikeTemp: Int,
+        val feelsLikeTemp: Float,
         val pressure: Float,
         val weaterIcon: String,
         val weatherCode: String,
@@ -13,8 +13,8 @@ data class CurrentWeatherDto(
         val windDir: String,
         val sunriseTime: String,
         val sunsetTime: String,
-        val cloudCoverage: Int,
-        val uvIndex: Int,
+        val cloudCoverage: Float,
+        val uvIndex: Float,
         val cityName: String,
         val countryCode: String,
         val humidity: String,

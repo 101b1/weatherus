@@ -7,9 +7,10 @@ import com.ilih.weatherus.domain.boundary.HomeEmpty
 import com.ilih.weatherus.domain.boundary.HomeError
 import com.ilih.weatherus.domain.boundary.HomeForecastResult
 import com.ilih.weatherus.domain.boundary.HomeSuccess
-import com.ilih.weatherus.domain.usecase.home.HomeDto
 import com.ilih.weatherus.domain.usecase.home.HomeInteractor
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 sealed class LoadingStatus
@@ -30,7 +31,9 @@ constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel
 
     init {
         disposable = interactor.getObservable()
+            .subscribeOn(Schedulers.io())
             .doOnSubscribe { _status.value = IN_PROCESS }
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe { fetched ->
                 when (fetched) {
                     is HomeSuccess -> {
@@ -46,16 +49,23 @@ constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel
                     }
                 }
             }
-        interactor.nextForecast()
     }
 
     override fun onRefreshClicked() {
         interactor.nextForecast()
     }
 
+    override fun inflated() {
+        interactor.nextForecast()
+    }
+
     override fun onCleared() {
         super.onCleared()
         disposable.dispose()
+    }
+
+    override fun getListener(): HomeView.Listener {
+        return this
     }
 
     override fun getData(): LiveData<HomeForecastResult> {

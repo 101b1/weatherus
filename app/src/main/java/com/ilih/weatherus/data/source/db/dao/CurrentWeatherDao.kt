@@ -15,7 +15,7 @@ interface CurrentWeatherDao: BaseDao<CurrentWeatherEntity> {
     fun getById(id: Long): CurrentWeatherEntity
 
     @Query("SELECT * FROM current_weather WHERE homeParent=:cityId LIMIT 1")
-    fun getHomeWeather(cityId: Long): Observable<CurrentWeatherEntity>
+    fun getHomeWeather(cityId: Long): Single<CurrentWeatherEntity?>
 
     @Query("SELECT * FROM current_weather")
     fun getAllSingle(): Single<List<CurrentWeatherEntity>>

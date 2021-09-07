@@ -8,7 +8,7 @@ data class CurrentWeatherData(
     @SerializedName("wind_cdir")
     val windDir: String,
     @SerializedName("rh")
-    val relativeHumidity: Int,
+    val relativeHumidity: Float,
     @SerializedName("pod")
     val partOfTheDay: String,
     @SerializedName("lon")
@@ -22,39 +22,39 @@ data class CurrentWeatherData(
     @SerializedName("country_code")
     val countryCode: String,
     @SerializedName("clouds")
-    val cloudCoverage: Int,
+    val cloudCoverage: Float,
     @SerializedName("vis")
-    val visibility: Int,
+    val visibility: Float,
     @SerializedName("wind_spd")
     val windSpeed: Float,
     @SerializedName("app_temp")
-    val apparentTemp: Int,
+    val apparentTemp: Float,
     @SerializedName("state_code")
     val stateCode: String,
     @SerializedName("ts")
     val timestamp: Long,
     @SerializedName("h_angle")
-    val solarHourAngle: Int,
+    val solarHourAngle: Float,
     @SerializedName("dewpt")
     val dewPoint: Float,
     @SerializedName("weather")
     val weather: WeatherDescription,
     @SerializedName("uv")
-    val uvIndex: Int,
+    val uvIndex: Float,
     @SerializedName("aqi")
-    val airQuality: Int,
+    val airQuality: Float,
     @SerializedName("station")
     val station: String,
     @SerializedName("wind_dir")
-    val windDirectionDegrees: Int,
+    val windDirectionDegrees: Float,
     @SerializedName("elev_angle")
-    val solarElevationAngle: Int,
+    val solarElevationAngle: Float,
     @SerializedName("datetime")
     val dateTime: String,
     @SerializedName("precip")
-    val liquidPrecipitation: Int,
+    val liquidPrecipitation: Float,
     @SerializedName("solar_rad")
-    val solarRad: Int,
+    val solarRad: Float,
     @SerializedName("city_name")
     val cityName: String,
     @SerializedName("sunrise")

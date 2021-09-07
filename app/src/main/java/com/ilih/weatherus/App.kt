@@ -3,6 +3,7 @@ package com.ilih.weatherus
 import android.app.Application
 import android.util.Log
 import com.ilih.weatherus.di.AppComponent
+import io.reactivex.plugins.RxJavaPlugins
 
 const val LOG_TAG = "Weatherus"
 
@@ -18,6 +19,7 @@ open class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
+        RxJavaPlugins.setErrorHandler { e -> {} }
         getAppComponent().inject(this)
     }
 

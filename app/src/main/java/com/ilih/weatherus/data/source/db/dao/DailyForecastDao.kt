@@ -10,7 +10,7 @@ import io.reactivex.Single
 interface DailyForecastDao: BaseDao<DailyForecastEntity> {
 
     @Query("SELECT * FROM daily_forecast WHERE homeParent=:cityId")
-    fun getCityForecast(cityId: Long): Observable<List<DailyForecastEntity>>
+    fun getCityForecast(cityId: Long): Single<List<DailyForecastEntity>?>
 
     @Query("DELETE FROM daily_forecast WHERE homeParent=:cityId")
     fun deleteAllForCity(cityId: Long)

@@ -12,7 +12,7 @@ interface HourlyForecastDao: BaseDao<HourlyForecastEntity> {
 //    fun getCityForecast(name: String): Single<HourlyForecastEntity>
 
     @Query("SELECT * FROM hourly_forecast WHERE homeParent=:cityId")
-    fun getCityForecast(cityId: Long): Observable<List<HourlyForecastEntity>>
+    fun getCityForecast(cityId: Long): Single<List<HourlyForecastEntity>?>
 
     @Query("DELETE FROM hourly_forecast WHERE homeParent=:cityId")
     fun deleteAllForCity(cityId: Long)
