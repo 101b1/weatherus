@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3d73a4c03ba83e85e2d830cb4df3eedd",
+    "identityHash": "62468c780ec83fcb71420cf07049d809",
     "entities": [
       {
         "tableName": "current_weather",
@@ -128,7 +128,7 @@
       },
       {
         "tableName": "daily_forecast",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `max_temp` REAL NOT NULL, `min_temp` REAL NOT NULL, `weather_icon` TEXT NOT NULL, `weather_code` INTEGER NOT NULL, `weather_desc` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `homeParent` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `max_temp` REAL NOT NULL, `min_temp` REAL NOT NULL, `weather_icon` TEXT NOT NULL, `weather_code` TEXT NOT NULL, `weather_desc` TEXT NOT NULL, `timestamp` INTEGER NOT NULL, `homeParent` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -157,7 +157,7 @@
           {
             "fieldPath": "weatherCode",
             "columnName": "weather_code",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -298,7 +298,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3d73a4c03ba83e85e2d830cb4df3eedd')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '62468c780ec83fcb71420cf07049d809')"
     ]
   }
 }

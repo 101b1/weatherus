@@ -9,13 +9,9 @@ data class DailyForecastData(
     val maxTemp: Float,
     @SerializedName("min_temp")
     val minTemp: Float,
-    @SerializedName("weather_icon")
-    val weatherIcon: String,
-    @SerializedName("weather_code")
-    val weatherCode: Int,
-    @SerializedName("weather_desc")
-    val weatherDesc: String,
-    @SerializedName("timestamp")
+    @SerializedName("weather")
+    val weather: WeatherDescription,
+    @SerializedName("ts")
     val timestamp: Long
 )
 
@@ -24,9 +20,9 @@ fun DailyForecastData.toDto() =
         DailyForecastDto(
             maxTemp = maxTemp,
             minTemp = minTemp,
-            weatherIcon = weatherIcon,
-            weatherCode = weatherCode,
-            weatherDesc = weatherDesc,
+            weatherIcon = weather.iconID,
+            weatherCode = weather.iconCode,
+            weatherDesc = weather.description,
             timestamp = timestamp
         )
     }
@@ -37,9 +33,9 @@ fun DailyForecastData.toEntity(parentId: Long) =
             null,
             maxTemp = maxTemp,
             minTemp = minTemp,
-            weatherIcon = weatherIcon,
-            weatherCode = weatherCode,
-            weatherDesc = weatherDesc,
+            weatherIcon = weather.iconID,
+            weatherCode = weather.iconCode,
+            weatherDesc = weather.description,
             timestamp = timestamp,
             homeParent = parentId
         )

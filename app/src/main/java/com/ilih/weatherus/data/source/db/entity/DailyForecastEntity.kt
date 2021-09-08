@@ -17,7 +17,7 @@ data class DailyForecastEntity(
     @ColumnInfo(name = "weather_icon")
     val weatherIcon: String,
     @ColumnInfo(name = "weather_code")
-    val weatherCode: Int,
+    val weatherCode: String,
     @ColumnInfo(name = "weather_desc")
     val weatherDesc: String,
     @ColumnInfo(name = "timestamp")

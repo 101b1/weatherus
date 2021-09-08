@@ -68,15 +68,14 @@ class WeatherRepoImpl
         return Single.zip(
             getCWCache(cityId),
             getDFCache(cityId),
-            getHFCache(cityId),
-            { current, daily, hourly ->
-                return@zip if (current == null || daily == null || hourly == null)
+            { current, daily ->
+                return@zip if (current == null || daily == null)
                     HomeEmpty as HomeForecastResult
                 else
-                    HomeSuccess(
+                    HomeCache(
                         HomeDto(
                             current.toDto(),
-                            ArrayList(hourly.map { item -> item.toDto() }),
+//                            ArrayList(hourly.map { item -> item.toDto() }),
                             ArrayList(daily.map { item -> item.toDto() })
                         )
                     ) as HomeForecastResult
@@ -92,21 +91,21 @@ class WeatherRepoImpl
         return Single.zip(
             getCWNetwork(cityId),
             getDFNetwork(cityId),
-            getHFNetwork(cityId),
-            { current: CurrentWeatherResponse, daily: DailyForecastResponse, hourly: HourlyForecastResponse ->
+//            getHFNetwork(cityId),
+            { current: CurrentWeatherResponse, daily: DailyForecastResponse ->
                 val currentEntity = current.data[0].toEntity(cityId)
                 val dailyList = daily.data.map { item -> item.toEntity(cityId) }
-                val hourlyList = hourly.data.map { item -> item.toEntity(cityId) }
+//                val hourlyList = hourly.data.map { item -> item.toEntity(cityId) }
                 db.currentWeatherDao().deleteAllForCity(cityId)
                 db.dailyForecastDao().deleteAllForCity(cityId)
-                db.hourlyForecastDao().deleteAllForCity(cityId)
+//                db.hourlyForecastDao().deleteAllForCity(cityId)
                 db.currentWeatherDao().insert(currentEntity)
                 db.dailyForecastDao().insertAll(dailyList)
-                db.hourlyForecastDao().insertAll(hourlyList)
+//                db.hourlyForecastDao().insertAll(hourlyList)
                 HomeSuccess(
                     HomeDto(
                         currentEntity.toDto(),
-                        ArrayList(hourlyList.map { item -> item.toDto() }),
+//                        ArrayList(hourlyList.map { item -> item.toDto() }),
                         ArrayList(dailyList.map { item -> item.toDto() })
                     )
                 ) as HomeForecastResult
@@ -122,7 +121,6 @@ class WeatherRepoImpl
             getHomeForecastCache(cityId),
             getHomeForecastNetwork(cityId)
         ).toObservable()
-            .subscribeOn(Schedulers.io())
     }
 
     // Not used

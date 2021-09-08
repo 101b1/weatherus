@@ -4,10 +4,13 @@ import android.content.Context
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ilih.weatherus.R
 import com.ilih.weatherus.databinding.FragmentHomeBinding
 import com.ilih.weatherus.domain.boundary.HomeError
 import com.ilih.weatherus.domain.boundary.HomeSuccess
+import com.ilih.weatherus.utils.TimeUtils
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
@@ -33,23 +36,25 @@ class HomeViewImpl(
             when (it){
                 is HomeSuccess -> {
                     if (binding.recyclerHomeDaily.adapter == null) {
+                        binding.recyclerHomeDaily.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
                         binding.recyclerHomeDaily.adapter = DailyForecastAdapter(it.homeForecast.dailyForecast)
                     } else {
                         (binding.recyclerHomeDaily.adapter as DailyForecastAdapter).updateData(it.homeForecast.dailyForecast)
                     }
-                    if (binding.recyclerHomeHourly.adapter == null){
-                        binding.recyclerHomeHourly.adapter = HourlyForecastAdapter(it.homeForecast.hourlyForecast)
-                    } else {
-                        (binding.recyclerHomeHourly.adapter as HourlyForecastAdapter).updateData(it.homeForecast.hourlyForecast)
-                    }
+//                    if (binding.recyclerHomeHourly.adapter == null){
+//                        binding.recyclerHomeHourly.adapter = HourlyForecastAdapter(it.homeForecast.hourlyForecast)
+//                    } else {
+//                        (binding.recyclerHomeHourly.adapter as HourlyForecastAdapter).updateData(it.homeForecast.hourlyForecast)
+//                    }
                     it.homeForecast.currentWeather.apply {
                         binding.textHomeCity.text = cityName
-                        binding.textHomeTemp.text = temperature.roundToInt().toString()
+                        binding.textHomeTemp.text = temperature.roundToInt().toString()+"°"
                         binding.textHomeWeather.text = weatherDesc
-                        binding.textHomeHum.text = humidity
-                        binding.textHomePressure.text = pressure.roundToInt().toString()
+                        binding.textHomeHum.text = humidity+"%"
+                        binding.textHomePressure.text = (pressure*0.75).roundToInt().toString()
                         binding.textHomeWind.text = windSpeed.roundToInt().toString()
-                        binding.textHomeUpdated.text = SimpleDateFormat("dd.MM.yy HH:mm").format(Date(timestamp))
+                        binding.textHomeUpdated.text = SimpleDateFormat(TimeUtils.FULL_DATETIME_PATTERN)
+                            .format(Date(TimeUtils.expandTimestamp(timestamp)))
                     }
                 }
                 is HomeError -> {
@@ -63,21 +68,27 @@ class HomeViewImpl(
                     binding.imageHomeRefresh.clearAnimation()
                     binding.imageHomeRefresh.isClickable = true
                 }
+                is IN_PROCESS -> {
+                    val animation =
+                        AnimationUtils.loadAnimation(context, R.anim.anim_rotate)
+                    binding.imageHomeRefresh.isClickable = false
+                    binding.imageHomeRefresh.startAnimation(animation)
+                }
             }
         }
     }
 
     override fun setListeners() {
         binding.imageHomeRefresh.setOnClickListener {
-            refresh()
             listener.onRefreshClicked()
         }
     }
 
     override fun refresh() {
-        val animation =
-            AnimationUtils.loadAnimation(context, R.anim.anim_rotate)
-        binding.imageHomeRefresh.isClickable = false
-        binding.imageHomeRefresh.startAnimation(animation)
+//        val animation =
+//            AnimationUtils.loadAnimation(context, R.anim.anim_rotate)
+//        binding.imageHomeRefresh.isClickable = false
+//        binding.imageHomeRefresh.startAnimation(animation)
+        listener.onRefreshClicked()
     }
 }

@@ -3,10 +3,7 @@ package com.ilih.weatherus.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ilih.weatherus.domain.boundary.HomeEmpty
-import com.ilih.weatherus.domain.boundary.HomeError
-import com.ilih.weatherus.domain.boundary.HomeForecastResult
-import com.ilih.weatherus.domain.boundary.HomeSuccess
+import com.ilih.weatherus.domain.boundary.*
 import com.ilih.weatherus.domain.usecase.home.HomeInteractor
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -40,6 +37,9 @@ constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel
                         _status.value = DONE
                         _data.value = fetched
                     }
+                    is HomeCache -> {
+                        _data.value = fetched
+                    }
                     is HomeError -> {
                         _status.value = DONE
                         _data.value = fetched
@@ -53,6 +53,7 @@ constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel
 
     override fun onRefreshClicked() {
         interactor.nextForecast()
+        _status.value = IN_PROCESS
     }
 
     override fun inflated() {

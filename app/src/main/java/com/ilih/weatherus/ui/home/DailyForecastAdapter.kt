@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ilih.weatherus.R
 import com.ilih.weatherus.domain.entity.DailyForecastDto
+import com.ilih.weatherus.utils.TimeUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -32,7 +33,7 @@ class DailyForecastAdapter(private val itemList: ArrayList<DailyForecastDto>) :
 
         fun bind(forecast: DailyForecastDto) {
             forecast.apply {
-                textDay.text = SimpleDateFormat("EEEE").format(Date(timestamp))
+                textDay.text = SimpleDateFormat("EEEE").format(Date(TimeUtils.expandTimestamp(timestamp)))
                 // TODO inflate weather icons via WeatherIconRepo
                 textHighTemp.text = maxTemp.roundToInt().toString()
                 textLowTemp.text = minTemp.roundToInt().toString()

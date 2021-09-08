@@ -4,7 +4,7 @@ data class DailyForecastDto(
     val maxTemp: Float,
     val minTemp: Float,
     val weatherIcon: String,
-    val weatherCode: Int,
+    val weatherCode: String,
     val weatherDesc: String,
     val timestamp: Long,
 )
