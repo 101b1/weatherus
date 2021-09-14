@@ -5,4 +5,8 @@
     <string name="title_notifications">Notifications</string>
     <string name="today">Today</string>
     <string name="data_download_error">Download error</string>
+    <string name="humidity_value">%1$s</string>
+    <string name="pressure_value">%1$d mmhg</string>
+    <string name="windspeed_value">%1$d m/s</string>
+    <string name="temperature_value">%1$d°</string>
 </resources>

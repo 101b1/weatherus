@@ -1,4 +1,4 @@
-package com.ilih.weatherus.di
+    package com.ilih.weatherus.di
 
 import dagger.Module
 import dagger.Provides
@@ -47,6 +47,7 @@ object RetrofitModule {
     fun getRetrofit() = Retrofit.Builder()
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
+        .client(getClient())
         .baseUrl(BASE_URL)
         .build()
 

@@ -29,7 +29,10 @@ constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel
     init {
         disposable = interactor.getObservable()
             .subscribeOn(Schedulers.io())
-            .doOnSubscribe { _status.value = IN_PROCESS }
+            .doOnSubscribe {
+                _status.value = IN_PROCESS
+                interactor.nextForecast()
+            }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { fetched ->
                 when (fetched) {
@@ -58,6 +61,7 @@ constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel
 
     override fun inflated() {
         interactor.nextForecast()
+        _status.value = IN_PROCESS
     }
 
     override fun onCleared() {

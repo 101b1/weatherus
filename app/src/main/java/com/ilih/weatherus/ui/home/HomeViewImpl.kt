@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ilih.weatherus.R
 import com.ilih.weatherus.databinding.FragmentHomeBinding
+import com.ilih.weatherus.di.AppComponent
+import com.ilih.weatherus.domain.boundary.HomeCache
 import com.ilih.weatherus.domain.boundary.HomeError
 import com.ilih.weatherus.domain.boundary.HomeSuccess
+import com.ilih.weatherus.log
 import com.ilih.weatherus.utils.TimeUtils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,12 +31,41 @@ class HomeViewImpl(
         this.listener = listener
         initViews()
         setListeners()
-        this.listener.inflated()
     }
 
     override fun initViews() {
         viewModel.getData().observe(lifecycleOwner) {
             when (it){
+                is HomeCache -> {
+                    if (binding.recyclerHomeDaily.adapter == null) {
+                        binding.recyclerHomeDaily.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                        binding.recyclerHomeDaily.adapter = DailyForecastAdapter(it.homeForecast.dailyForecast)
+                    } else {
+                        (binding.recyclerHomeDaily.adapter as DailyForecastAdapter).updateData(it.homeForecast.dailyForecast)
+                    }
+//                    if (binding.recyclerHomeHourly.adapter == null){
+//                        binding.recyclerHomeHourly.adapter = HourlyForecastAdapter(it.homeForecast.hourlyForecast)
+//                    } else {
+//                        (binding.recyclerHomeHourly.adapter as HourlyForecastAdapter).updateData(it.homeForecast.hourlyForecast)
+//                    }
+                    try {
+                        val h = context.getString(R.string.humidity_value, it.homeForecast.currentWeather.humidity)
+                        this.log(h)
+                    } catch (e: Exception){
+                        this.log(e.stackTraceToString())
+                    }
+
+                    it.homeForecast.currentWeather.apply {
+                        binding.textHomeCity.text = cityName
+                        binding.textHomeTemp.text = context.getString(R.string.temperature_value, temperature.roundToInt())
+                        binding.textHomeWeather.text = weatherDesc
+                        binding.textHomeHum.text = humidity
+                        binding.textHomePressure.text = context.getString(R.string.pressure_value,(pressure*0.75).roundToInt())
+                        binding.textHomeWind.text = context.getString(R.string.windspeed_value,windSpeed.roundToInt())
+                        binding.textHomeUpdated.text = SimpleDateFormat(TimeUtils.FULL_DATETIME_PATTERN)
+                            .format(Date(TimeUtils.expandTimestamp(timestamp)))
+                    }
+                }
                 is HomeSuccess -> {
                     if (binding.recyclerHomeDaily.adapter == null) {
                         binding.recyclerHomeDaily.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -46,13 +78,14 @@ class HomeViewImpl(
 //                    } else {
 //                        (binding.recyclerHomeHourly.adapter as HourlyForecastAdapter).updateData(it.homeForecast.hourlyForecast)
 //                    }
+                    val h = context.getString(R.string.humidity_value, it.homeForecast.currentWeather.humidity)
                     it.homeForecast.currentWeather.apply {
                         binding.textHomeCity.text = cityName
-                        binding.textHomeTemp.text = temperature.roundToInt().toString()+"°"
+                        binding.textHomeTemp.text = context.getString(R.string.temperature_value, temperature.roundToInt())
                         binding.textHomeWeather.text = weatherDesc
-                        binding.textHomeHum.text = humidity+"%"
-                        binding.textHomePressure.text = (pressure*0.75).roundToInt().toString()
-                        binding.textHomeWind.text = windSpeed.roundToInt().toString()
+                        binding.textHomeHum.text = context.getString(R.string.humidity_value, humidity)
+                        binding.textHomePressure.text = context.getString(R.string.pressure_value,(pressure*0.75).roundToInt())
+                        binding.textHomeWind.text = context.getString(R.string.windspeed_value,windSpeed.roundToInt())
                         binding.textHomeUpdated.text = SimpleDateFormat(TimeUtils.FULL_DATETIME_PATTERN)
                             .format(Date(TimeUtils.expandTimestamp(timestamp)))
                     }

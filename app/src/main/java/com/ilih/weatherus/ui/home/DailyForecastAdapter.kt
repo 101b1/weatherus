@@ -33,7 +33,7 @@ class DailyForecastAdapter(private val itemList: ArrayList<DailyForecastDto>) :
 
         fun bind(forecast: DailyForecastDto) {
             forecast.apply {
-                textDay.text = SimpleDateFormat("EEEE").format(Date(TimeUtils.expandTimestamp(timestamp)))
+                textDay.text = SimpleDateFormat("EEEE", Locale.ENGLISH).format(Date(TimeUtils.expandTimestamp(timestamp)))
                 // TODO inflate weather icons via WeatherIconRepo
                 textHighTemp.text = maxTemp.roundToInt().toString()
                 textLowTemp.text = minTemp.roundToInt().toString()
