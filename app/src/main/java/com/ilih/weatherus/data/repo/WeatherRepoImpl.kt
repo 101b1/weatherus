@@ -40,13 +40,13 @@ class WeatherRepoImpl
             }
             .subscribeOn(Schedulers.io())
 
-    private fun getHFCache(cityId: Long) =
-        db.hourlyForecastDao()
-            .getCityForecast(cityId)
-            .onErrorReturn {
-                null
-            }
-            .subscribeOn(Schedulers.io())
+//    private fun getHFCache(cityId: Long) =
+//        db.hourlyForecastDao()
+//            .getCityForecast(cityId)
+//            .onErrorReturn {
+//                null
+//            }
+//            .subscribeOn(Schedulers.io())
 
     private fun getCWNetwork(cityId: Long) =
         api.getCurrentWeather(cityId)
@@ -58,10 +58,10 @@ class WeatherRepoImpl
             .delay(2000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
 
-    private fun getHFNetwork(cityId: Long) =
-        api.getHourlyForecast(cityId)
-            .delay(2000, TimeUnit.MILLISECONDS)
-            .subscribeOn(Schedulers.io())
+//    private fun getHFNetwork(cityId: Long) =
+//        api.getHourlyForecast(cityId)
+//            .delay(2000, TimeUnit.MILLISECONDS)
+//            .subscribeOn(Schedulers.io())
 
 
     private fun getHomeForecastCache(cityId: Long): Single<HomeForecastResult> {

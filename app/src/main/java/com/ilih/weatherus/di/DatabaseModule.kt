@@ -14,6 +14,6 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun providesDatabase(context: Context) = Room.databaseBuilder(context, WeatherDB::class.java, DB_NAME).build()
+    fun providesDatabase(context: Context) = Room.databaseBuilder(context, WeatherDB::class.java, DB_NAME).createFromAsset("weatherus.db").build()
 
 }

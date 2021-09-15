@@ -9,7 +9,7 @@ import com.ilih.weatherus.data.source.db.entity.*
     entities = [
         CurrentWeatherEntity::class,
         DailyForecastEntity::class,
-        HourlyForecastEntity::class,
+//        HourlyForecastEntity::class,
         CityEntity::class,
 //        HomeForecastEntity::class
                ],
@@ -19,7 +19,7 @@ import com.ilih.weatherus.data.source.db.entity.*
 abstract class WeatherDB : RoomDatabase() {
     abstract fun currentWeatherDao(): CurrentWeatherDao
     abstract fun dailyForecastDao(): DailyForecastDao
-    abstract fun hourlyForecastDao(): HourlyForecastDao
+//    abstract fun hourlyForecastDao(): HourlyForecastDao
 //    abstract fun homeForecastDao(): HomeForecastDao
     abstract fun cityDao(): CityDao
 }
