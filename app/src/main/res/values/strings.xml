@@ -9,4 +9,8 @@
     <string name="pressure_value">%1$d mmhg</string>
     <string name="windspeed_value">%1$d m/s</string>
     <string name="temperature_value">%1$d°</string>
+    <string name="search">Search</string>
+    <string name="refresh">Refresh</string>
+    <string name="edit">Edit</string>
+    <string name="city_name">City name</string>
 </resources>

@@ -12,4 +12,7 @@ interface CityDao: BaseDao<CityEntity> {
 
     @Query("SELECT * FROM cities WHERE city_id=:id LIMIT 1")
     fun getByIDRx(id: Long): Single<CityEntity>
+
+    @Query("SELECT snippet(cities_fts) FROM cities JOIN cities_fts ON cities.city_id == cities_fts.rowid WHERE cities_fts.city_name MATCH :search")
+    fun searchCities(search: String): Single<List<CityEntity>>
 }
