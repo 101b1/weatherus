@@ -11,31 +11,27 @@ import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 
-
 class HomeInteractorImpl
 @Inject constructor(
     private val repo: WeatherRepo,
     private val homeCityStore: HomeCityStore
 ) : HomeInteractor {
 
-    private var homeCity: Long = homeCityStore.getHomeCityID()
-    private val DEFAULT_HOME_CITY = 524901L
-
     val homeForecastSubject: PublishSubject<HomeForecastResult> = PublishSubject.create()
 
-    override fun nextForecast(){
-        if (homeCity == 0L){
-            homeCity = DEFAULT_HOME_CITY
-            homeCityStore.saveHomeCityID(homeCity)
-        }
-        repo.getHomeDto(homeCity)
+    override fun nextForecast() {
+        homeCityStore.getHomeCity()
+            .toObservable()
+            .flatMap {
+                repo.getHomeDto(it)
+            }
             .subscribeOn(Schedulers.io())
-            .doOnSubscribe{this.log("SUBSCRIBED TO gethomedto")}
+            .doOnSubscribe { this.log("SUBSCRIBED TO gethomedto") }
             .onErrorReturn {
                 it.message?.let { this.log(it) }
                 HomeError
             }
-            .subscribe (
+            .subscribe(
                 {
                     homeForecastSubject.onNext(it)
                 },
@@ -43,7 +39,7 @@ class HomeInteractorImpl
                     this.log(it.message!!)
                     HomeError
                 }
-        )
+            )
     }
 
     override fun getObservable(): Observable<HomeForecastResult> = homeForecastSubject

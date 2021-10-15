@@ -13,4 +13,5 @@
     <string name="refresh">Refresh</string>
     <string name="edit">Edit</string>
     <string name="city_name">City name</string>
+    <string name="search_error">Search error</string>
 </resources>

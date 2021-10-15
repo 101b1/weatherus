@@ -2,11 +2,13 @@ package com.ilih.weatherus.data.source.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.ilih.weatherus.data.source.db.dao.*
-import com.ilih.weatherus.data.source.db.entity.*
-import com.ilih.weatherus.domain.boundary.CityDB
-import com.ilih.weatherus.domain.entity.CityDto
-import io.reactivex.Single
+import com.ilih.weatherus.data.source.db.dao.CityDao
+import com.ilih.weatherus.data.source.db.dao.CurrentWeatherDao
+import com.ilih.weatherus.data.source.db.dao.DailyForecastDao
+import com.ilih.weatherus.data.source.db.entity.CityEntity
+import com.ilih.weatherus.data.source.db.entity.CityFTS
+import com.ilih.weatherus.data.source.db.entity.CurrentWeatherEntity
+import com.ilih.weatherus.data.source.db.entity.DailyForecastEntity
 
 @Database(
     entities = [
@@ -19,18 +21,9 @@ import io.reactivex.Single
     version = 1,
     exportSchema = true
 )
-abstract class WeatherDB : RoomDatabase(), CityDB {
+abstract class WeatherDB : RoomDatabase() {
     abstract fun currentWeatherDao(): CurrentWeatherDao
     abstract fun dailyForecastDao(): DailyForecastDao
-
-    //    abstract fun hourlyForecastDao(): HourlyForecastDao
-//    abstract fun homeForecastDao(): HomeForecastDao
     abstract fun cityDao(): CityDao
-
-    override fun searchCitiesByNameQuery(query: String): Single<ArrayList<CityDto>> {
-        return cityDao().searchCities(query).map {
-            ArrayList(it.map { item -> item.toDto() })
-        }
-    }
 
 }

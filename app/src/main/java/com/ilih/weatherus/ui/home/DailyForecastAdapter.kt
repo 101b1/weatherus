@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ilih.weatherus.R
 import com.ilih.weatherus.domain.entity.DailyForecastDto
+import com.ilih.weatherus.ui.common.BaseDiffUtilCallback
 import com.ilih.weatherus.utils.TimeUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

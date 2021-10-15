@@ -1,7 +1,6 @@
-package com.ilih.weatherus.ui.home
+package com.ilih.weatherus.ui.common
 
 import androidx.recyclerview.widget.DiffUtil
-import com.ilih.weatherus.domain.entity.HourlyForecastDto
 
 open class BaseDiffUtilCallback<T>(
     private val oldList: ArrayList<T>,
@@ -15,7 +14,7 @@ open class BaseDiffUtilCallback<T>(
         newList.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
-        oldList[oldItemPosition].hashCode() == newList[newItemPosition].hashCode()
+        oldList[oldItemPosition] == newList[newItemPosition]
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         val oldItem = oldList[oldItemPosition]

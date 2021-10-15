@@ -1,7 +1,5 @@
 package com.ilih.weatherus.domain.entity
 
-import androidx.room.ColumnInfo
-
 data class CityDto(
     val id: Long,
     val name: String,

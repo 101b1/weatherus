@@ -1,13 +1,13 @@
 package com.ilih.weatherus.domain.usecase.search
 
-import android.database.Observable
 import com.ilih.weatherus.domain.boundary.CityDB
+import com.ilih.weatherus.domain.boundary.CitySearcher
 import com.ilih.weatherus.domain.boundary.FavouriteCityStore
 import com.ilih.weatherus.domain.boundary.HomeCityStore
-import com.ilih.weatherus.domain.boundary.HomeError
 import com.ilih.weatherus.domain.entity.CityDto
 import com.ilih.weatherus.log
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import java.lang.Exception
@@ -17,13 +17,14 @@ class SearchInteractorImpl
 @Inject constructor(
     private val homeStore: HomeCityStore,
     private val favouriteStore: FavouriteCityStore,
-    private val cityDB: CityDB
+//    private val cityDB: CityDB,
+    private val citySearcher: CitySearcher
 ) : SearchInteractor {
 
-    private val searchSubject: PublishSubject<ArrayList<CityDto>> = PublishSubject.create()
+    private val searchSubject: PublishSubject<SearchEvent> = PublishSubject.create()
 
     override fun searchCities(query: String) {
-        cityDB.searchCitiesByNameQuery(query)
+        citySearcher.getResultObservable()
             .subscribeOn(Schedulers.io())
             .subscribe (
                 {
@@ -31,14 +32,14 @@ class SearchInteractorImpl
                 },
                 {
                     this.log(it.message!!)
-                    searchSubject.onNext(ArrayList())
+                    searchSubject.onNext(SearchError(it.message ?: "Search error"))
                 }
             )
     }
 
     override fun homeCityChosen(cityId: Long): Boolean {
         try {
-            homeStore.saveHomeCityID(cityId)
+            homeStore.saveHomeCity(cityId)
             this.log("City $cityId saved as home")
             return true
         } catch (ex: Exception){
@@ -52,6 +53,6 @@ class SearchInteractorImpl
             .subscribeOn(Schedulers.io())
     }
 
-    override fun getSearchResultObservable(): Observable<ArrayList<CityDto>> =
-        searchSubject as Observable<ArrayList<CityDto>>
+    override fun getSearchResultObservable(): Observable<SearchEvent> =
+        searchSubject
 }

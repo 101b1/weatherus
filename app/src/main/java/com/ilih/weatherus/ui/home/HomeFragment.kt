@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
             this,
             (requireActivity() as MainActivity).getContextComponent().getContext()
         )
-        (homeView as HomeViewImpl).onFinishInflate(homeViewModel.getListener())
+        homeView.onFinishInflate(homeViewModel.getListener())
         return view
     }
 

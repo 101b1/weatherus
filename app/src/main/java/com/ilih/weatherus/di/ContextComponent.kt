@@ -18,5 +18,5 @@ interface ContextComponent {
 
     fun getContext(): Context
 
-    fun inject(activity: MainActivity)
+//    fun inject(activity: MainActivity)
 }

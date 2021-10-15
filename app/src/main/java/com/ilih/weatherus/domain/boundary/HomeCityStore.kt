@@ -1,6 +1,9 @@
 package com.ilih.weatherus.domain.boundary
 
+import io.reactivex.Completable
+import io.reactivex.Single
+
 interface HomeCityStore {
-    fun getHomeCityID(): Long
-    fun saveHomeCityID(cityID: Long)
+    fun getHomeCity(): Single<Long>
+    fun saveHomeCity(city: Long): Completable
 }
