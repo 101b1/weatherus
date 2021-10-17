@@ -54,6 +54,10 @@ constructor(
                 interactor.homeCityChosen(city.id)
                 router.navigateFromSearch()
             }
+            R.id.navigation_favourites -> {
+                interactor.favouriteCityChosen(city.id)
+                router.navigateFromSearch()
+            }
         }
 //        interactor.homeCityChosen(city.id)
     }

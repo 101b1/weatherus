@@ -8,7 +8,7 @@ interface HomeInteractor {
 
 //    fun getLatestForecasts(): Observable<HomeForecastResult>
 
-    fun nextForecast()
+    fun nextForecast(cityId: Long = 0L)
     fun getObservable(): Observable<HomeForecastResult>
 
 }

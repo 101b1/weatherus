@@ -54,7 +54,19 @@ class MainActivity : AppCompatActivity() {
                     mainMenu?.let {
                         it.getItem(0).setVisible(true)
                         it.getItem(1).setVisible(false)
-                        it.getItem(2).setVisible(false)
+//                        it.getItem(2).setVisible(false)
+                        val search = it.findItem(R.id.menu_search)
+                        val searchView = search?.actionView as SearchView
+                        searchView.setQuery("", false)
+                        if (!searchView.isIconified)
+                            searchView.isIconified = true
+                    }
+                }
+                R.id.navigation_favourites -> {
+                    mainMenu?.let {
+                        it.getItem(0).setVisible(true)
+                        it.getItem(1).setVisible(true)
+//                        it.getItem(2).setVisible(false)
                         val search = it.findItem(R.id.menu_search)
                         val searchView = search?.actionView as SearchView
                         searchView.setQuery("", false)
@@ -81,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_favourites, R.id.navigation_notifications
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -103,6 +115,9 @@ class MainActivity : AppCompatActivity() {
             when (navController.currentDestination?.id) {
                 R.id.navigation_home -> {
                     router.navigateToSearch(R.id.navigation_home)//navController.navigate(R.id.navigation_search)
+                }
+                R.id.navigation_favourites -> {
+                    router.navigateToSearch(R.id.navigation_favourites)
                 }
             }
         }

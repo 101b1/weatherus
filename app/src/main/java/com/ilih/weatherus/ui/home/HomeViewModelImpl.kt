@@ -24,14 +24,48 @@ constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel
     private val _status = MutableLiveData<LoadingStatus>()
     val status = _status
 
-    private val disposable: Disposable
+    private var disposable: Disposable? = null
+    private var targetCity = 0L
 
     init {
+//        disposable = interactor.getObservable()
+//            .subscribeOn(Schedulers.io())
+//            .doOnSubscribe {
+//                _status.value = IN_PROCESS
+//                interactor.nextForecast(targetCity)
+//            }
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe { fetched ->
+//                when (fetched) {
+//                    is HomeSuccess -> {
+//                        _status.value = DONE
+//                        _data.value = fetched
+//                    }
+//                    is HomeCache -> {
+//                        _data.value = fetched
+//                    }
+//                    is HomeError -> {
+//                        _status.value = DONE
+//                        _data.value = fetched
+//                    }
+//                    is HomeEmpty ->{
+//                        _data.value = fetched
+//                    }
+//                }
+//            }
+    }
+
+    override fun onRefreshClicked() {
+        interactor.nextForecast(targetCity)
+        _status.value = IN_PROCESS
+    }
+
+    override fun inflated() {
         disposable = interactor.getObservable()
             .subscribeOn(Schedulers.io())
             .doOnSubscribe {
                 _status.value = IN_PROCESS
-                interactor.nextForecast()
+                interactor.nextForecast(targetCity)
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { fetched ->
@@ -52,21 +86,13 @@ constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel
                     }
                 }
             }
-    }
-
-    override fun onRefreshClicked() {
-        interactor.nextForecast()
-        _status.value = IN_PROCESS
-    }
-
-    override fun inflated() {
-        interactor.nextForecast()
+//        interactor.nextForecast(targetCity)
         _status.value = IN_PROCESS
     }
 
     override fun onCleared() {
         super.onCleared()
-        disposable.dispose()
+        disposable?.dispose()
     }
 
     override fun getListener(): HomeView.Listener {
@@ -79,5 +105,9 @@ constructor(private val interactor: HomeInteractor) : ViewModel(), HomeViewModel
 
     override fun getStatus(): LiveData<LoadingStatus> {
         return status
+    }
+
+    override fun setTargetCity(cityID: Long) {
+        targetCity = cityID
     }
 }

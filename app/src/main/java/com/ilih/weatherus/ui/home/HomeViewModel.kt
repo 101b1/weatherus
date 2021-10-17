@@ -7,4 +7,5 @@ interface HomeViewModel {
     fun getListener(): HomeView.Listener
     fun getData(): LiveData<HomeForecastResult>
     fun getStatus(): LiveData<LoadingStatus>
+    fun setTargetCity(cityID: Long)
 }

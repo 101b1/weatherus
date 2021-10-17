@@ -19,7 +19,7 @@ class HomeInteractorImpl
 
     val homeForecastSubject: PublishSubject<HomeForecastResult> = PublishSubject.create()
 
-    override fun nextForecast() {
+    fun nextHomeForecast() {
         homeCityStore.getHomeCity()
             .toObservable()
             .flatMap {
@@ -40,6 +40,32 @@ class HomeInteractorImpl
                     HomeError
                 }
             )
+    }
+
+    fun nextFavouriteForecast(cityId: Long) {
+        repo.getHomeDto(cityId)
+            .subscribeOn(Schedulers.io())
+            .onErrorReturn {
+                it.message?.let { this.log(it) }
+                HomeError
+            }
+            .subscribe(
+                {
+                    homeForecastSubject.onNext(it)
+                },
+                {
+                    this.log(it.message!!)
+                    HomeError
+                }
+            )
+    }
+
+    override fun nextForecast(cityId: Long) {
+        if (cityId == 0L) {
+            nextHomeForecast()
+        } else {
+            nextFavouriteForecast(cityId)
+        }
     }
 
     override fun getObservable(): Observable<HomeForecastResult> = homeForecastSubject

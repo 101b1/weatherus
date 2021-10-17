@@ -30,4 +30,8 @@
         android:id="@+id/navigation_search"
         android:name="com.ilih.weatherus.ui.search.SearchFragment"
         android:label="SearchFragment" />
+    <fragment
+        android:id="@+id/navigation_favourites"
+        android:name="com.ilih.weatherus.ui.favourites.FavouritesFragment"
+        tools:layout="@layout/fragment_favourites" />
 </navigation>

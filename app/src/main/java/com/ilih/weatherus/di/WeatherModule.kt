@@ -4,10 +4,14 @@ import com.ilih.weatherus.data.repo.WeatherRepoImpl
 import com.ilih.weatherus.data.source.network.WeatherAPI
 import com.ilih.weatherus.domain.boundary.FavouriteCityStore
 import com.ilih.weatherus.domain.boundary.WeatherRepo
+import com.ilih.weatherus.domain.usecase.favourites.FavouritesInteractor
+import com.ilih.weatherus.domain.usecase.favourites.FavouritesInteractorImpl
 import com.ilih.weatherus.domain.usecase.home.HomeInteractor
 import com.ilih.weatherus.domain.usecase.home.HomeInteractorImpl
 import com.ilih.weatherus.domain.usecase.search.SearchInteractor
 import com.ilih.weatherus.domain.usecase.search.SearchInteractorImpl
+import com.ilih.weatherus.ui.favourites.FavouritesViewModel
+import com.ilih.weatherus.ui.favourites.FavouritesViewModelImpl
 import com.ilih.weatherus.ui.home.HomeViewModel
 import com.ilih.weatherus.ui.home.HomeViewModelImpl
 import com.ilih.weatherus.ui.search.SearchViewImpl
@@ -42,11 +46,19 @@ abstract class WeatherModule {
 
     @Binds
     @Reusable
+    abstract fun bindsFavouritesViewModel(favouritesViewModelImpl: FavouritesViewModelImpl): FavouritesViewModel
+
+    @Binds
+    @Reusable
     abstract fun bindsHomeInteractor(homeInteractorImpl: HomeInteractorImpl): HomeInteractor
 
     @Binds
     @Reusable
     abstract fun bindsSearchInteractor(searchInteractorImpl: SearchInteractorImpl): SearchInteractor
+
+    @Binds
+    @Reusable
+    abstract fun bindsFavouritesInteractor(favouritesInteractorImpl: FavouritesInteractorImpl): FavouritesInteractor
 
     //TODO Here to bind other ModelViews and Interactors
 

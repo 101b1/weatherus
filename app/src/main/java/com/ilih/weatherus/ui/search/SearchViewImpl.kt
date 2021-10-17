@@ -26,10 +26,6 @@ class SearchViewImpl(
     override fun onFinishInflate(listener: SearchView.Listener) {
         searchViewListener = listener
         initViews()
-        setViewsListeners()
-    }
-
-    private fun setViewsListeners() {
     }
 
     fun initViews(){

@@ -10,6 +10,7 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class CitySearcherImpl
@@ -17,7 +18,7 @@ class CitySearcherImpl
     private val db: WeatherDB
 ) : CitySearcher {
 
-    private val searchSubject = BehaviorSubject.create<SearchEvent>()
+    private val searchSubject = PublishSubject.create<SearchEvent>()
 
     override fun search(query: String) {
         //TODO filter search query
@@ -44,6 +45,6 @@ class CitySearcherImpl
     }
 
     override fun getResultObservable(): Observable<SearchEvent> {
-        return searchSubject
+        return searchSubject.doOnSubscribe { searchSubject.onNext(EmptySearch) }
     }
 }

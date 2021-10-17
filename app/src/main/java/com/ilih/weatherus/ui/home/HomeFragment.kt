@@ -15,7 +15,7 @@ import com.ilih.weatherus.log
 import javax.inject.Inject
 
 const val NEW_CITY = "new_city"
-
+const val TARGET_CITY = "target_city"
 class HomeFragment : Fragment() {
 
     @Inject
@@ -45,7 +45,8 @@ class HomeFragment : Fragment() {
             this,
             (requireActivity() as MainActivity).getContextComponent().getContext()
         )
-        homeView.onFinishInflate(homeViewModel.getListener())
+        val targetCity = arguments?.getLong(TARGET_CITY) ?: 0L
+        homeView.onFinishInflate(homeViewModel.getListener(), targetCity)
         return view
     }
 

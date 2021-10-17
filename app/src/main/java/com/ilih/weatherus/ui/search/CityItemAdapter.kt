@@ -3,6 +3,7 @@ package com.ilih.weatherus.ui.search
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
-class CityItemAdapter(private val cityList: ArrayList<CityDto>, private val listener: Listener) :
+class CityItemAdapter(
+    private val cityList: ArrayList<CityDto>,
+    private val listener: Listener,
+    private val deleteListener: DeleteListener? = null,
+    private val type: String = "search"
+) :
     RecyclerView.Adapter<CityItemAdapter.ViewHolder>() {
 
     private val diffUtilScope = CoroutineScope(Dispatchers.Default)
@@ -25,9 +31,19 @@ class CityItemAdapter(private val cityList: ArrayList<CityDto>, private val list
 
         private val cityNameTextView: TextView = itemView.findViewById(R.id.textCityName)
         private val countryNameTextView: TextView = itemView.findViewById(R.id.textCountryName)
+        private val deleteImageView: ImageView = itemView.findViewById(R.id.imageDeleteCity)
 
-        fun bind(city: CityDto){
-            cityNameTextView.text = city.name+","
+        fun bind(city: CityDto) {
+            if (type == "favourites"){
+                deleteImageView.visibility = View.VISIBLE
+                deleteImageView.setOnClickListener {
+                    deleteListener?.onDeleteClicked(city)
+                }
+            } else {
+                deleteImageView.visibility = View.GONE
+            }
+
+            cityNameTextView.text = city.name + ","
             countryNameTextView.text = city.countryName
             itemView.setOnClickListener {
                 listener.onCityClicked(city)
@@ -72,7 +88,11 @@ class CityItemAdapter(private val cityList: ArrayList<CityDto>, private val list
         newList: ArrayList<CityDto>
     ) : BaseDiffUtilCallback<CityDto>(oldList, newList)
 
-    interface Listener{
+    interface Listener {
         fun onCityClicked(city: CityDto)
+    }
+
+    interface DeleteListener{
+        fun onDeleteClicked(city: CityDto)
     }
 }

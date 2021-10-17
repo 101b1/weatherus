@@ -4,7 +4,7 @@ import com.ilih.weatherus.ui.common.BaseView
 
 interface HomeView: BaseView {
 
-    fun onFinishInflate(listener: Listener)
+    fun onFinishInflate(listener: Listener, targetCity: Long)
     fun refresh()
 
     interface Listener{
