@@ -3,6 +3,8 @@ package com.ilih.weatherus.ui.search
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ilih.weatherus.R
+import com.ilih.weatherus.domain.boundary.Router
 import com.ilih.weatherus.domain.entity.CityDto
 import com.ilih.weatherus.domain.usecase.search.*
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,7 +14,10 @@ import javax.inject.Inject
 
 class SearchViewModelImpl
 @Inject
-constructor(private val interactor: SearchInteractor) : ViewModel(), SearchViewModel,
+constructor(
+    private val interactor: SearchInteractor,
+    private val router: Router
+    ) : ViewModel(), SearchViewModel,
     SearchView.Listener {
 
     private val _data = MutableLiveData<SearchEvent>()
@@ -24,7 +29,7 @@ constructor(private val interactor: SearchInteractor) : ViewModel(), SearchViewM
         disposable = interactor.getSearchResultObservable()
             .subscribeOn(Schedulers.io())
             .doOnSubscribe{
-                _data.value = SearchLoading
+                _data.value = EmptySearch
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -44,7 +49,13 @@ constructor(private val interactor: SearchInteractor) : ViewModel(), SearchViewM
     }
 
     override fun onCityClicked(city: CityDto) {
-        interactor.homeCityChosen(city.id)
+        when (router.getSearchInitiator()){
+            R.id.navigation_home ->{
+                interactor.homeCityChosen(city.id)
+                router.navigateFromSearch()
+            }
+        }
+//        interactor.homeCityChosen(city.id)
     }
 
     override fun onCleared() {

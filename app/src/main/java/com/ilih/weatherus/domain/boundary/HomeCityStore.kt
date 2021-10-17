@@ -6,4 +6,5 @@ import io.reactivex.Single
 interface HomeCityStore {
     fun getHomeCity(): Single<Long>
     fun saveHomeCity(city: Long): Completable
+    fun closeStore()
 }

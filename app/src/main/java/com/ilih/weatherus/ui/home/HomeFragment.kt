@@ -11,7 +11,10 @@ import com.ilih.weatherus.MainActivity
 import com.ilih.weatherus.R
 import com.ilih.weatherus.databinding.FragmentHomeBinding
 import com.ilih.weatherus.di.WeatherComponent
+import com.ilih.weatherus.log
 import javax.inject.Inject
+
+const val NEW_CITY = "new_city"
 
 class HomeFragment : Fragment() {
 
@@ -23,8 +26,8 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        WeatherComponent.create((requireActivity().application as App).getAppComponent())
-            .injectHomeFragment(this)
+        (activity as MainActivity).getWeatherComponent().injectHomeFragment(this)
+        log("Fragment created")
         super.onCreate(savedInstanceState)
     }
 
@@ -33,6 +36,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        log("View created")
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
         homeView = HomeViewImpl(
@@ -43,6 +47,12 @@ class HomeFragment : Fragment() {
         )
         homeView.onFinishInflate(homeViewModel.getListener())
         return view
+    }
+
+    override fun onStart() {
+        if(arguments?.getBoolean(NEW_CITY) == true)
+            homeView.refresh()
+        super.onStart()
     }
 
     override fun onDestroyView() {

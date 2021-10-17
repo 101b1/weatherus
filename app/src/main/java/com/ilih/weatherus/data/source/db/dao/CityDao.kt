@@ -15,4 +15,7 @@ interface CityDao: BaseDao<CityEntity> {
 
     @Query("SELECT * FROM cities JOIN cities_fts ON cities.city_name == cities_fts.city_name WHERE cities_fts.city_name MATCH :search")
     fun searchCities(search: String): Single<List<CityEntity>>
+
+    @Query("SELECT * FROM cities WHERE favourite=1")
+    fun getFavouriteCities(): Single<List<CityEntity>>
 }

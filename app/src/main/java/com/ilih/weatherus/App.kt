@@ -8,7 +8,7 @@ import io.reactivex.plugins.RxJavaPlugins
 const val LOG_TAG = "Weatherus"
 
 fun Any.log(message: String){
-    Log.d(LOG_TAG, "[${this.javaClass.name}]: $message")
+    Log.d(LOG_TAG, "[${this.javaClass.simpleName}]: $message")
 }
 
 open class App: Application() {

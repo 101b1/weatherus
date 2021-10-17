@@ -8,21 +8,23 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ilih.weatherus.R
 import com.ilih.weatherus.databinding.FragmentSearchBinding
+import com.ilih.weatherus.domain.entity.CityDto
 import com.ilih.weatherus.domain.usecase.search.EmptySearch
 import com.ilih.weatherus.domain.usecase.search.SearchError
 import com.ilih.weatherus.domain.usecase.search.SearchLoading
 import com.ilih.weatherus.domain.usecase.search.SearchResult
 
 class SearchViewImpl(
-    private val viewModel: SearchViewModel,
     private val binding: FragmentSearchBinding,
+    private val viewModel: SearchViewModel,
     private val lifecycleOwner: LifecycleOwner,
     private val context: Context
-): SearchView {
+): SearchView, CityItemAdapter.Listener {
 
     lateinit var searchViewListener: SearchView.Listener
 
     override fun onFinishInflate(listener: SearchView.Listener) {
+        searchViewListener = listener
         initViews()
         setViewsListeners()
     }
@@ -31,7 +33,7 @@ class SearchViewImpl(
     }
 
     fun initViews(){
-        binding.recyclerCitySearch.adapter = CityItemAdapter(ArrayList())
+        binding.recyclerCitySearch.adapter = CityItemAdapter(ArrayList(), this)
         binding.recyclerCitySearch.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         viewModel.searchData().observe(lifecycleOwner){
             when(it){
@@ -60,5 +62,9 @@ class SearchViewImpl(
 
             }
         }
+    }
+
+    override fun onCityClicked(city: CityDto) {
+        searchViewListener.onCityClicked(city)
     }
 }

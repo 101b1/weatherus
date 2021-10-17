@@ -4,6 +4,7 @@ import android.content.Context
 import com.ilih.weatherus.data.source.db.WeatherDB
 import com.ilih.weatherus.data.source.db.entity.toDto
 import com.ilih.weatherus.domain.boundary.HomeCityStore
+import com.ilih.weatherus.log
 import io.reactivex.Completable
 import io.reactivex.CompletableObserver
 import io.reactivex.Single
@@ -21,9 +22,13 @@ class HomeCityStoreImpl
     private val HOME_CITY_KEY = "home_city"
 
     private val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+    private var homeCityId: Long = prefs.getLong(HOME_CITY_KEY, 524901L)
 
     override fun getHomeCity(): Single<Long> {
-        return Single.just(prefs.getLong(HOME_CITY_KEY, 524901L))
+        log("[getHomeCity]: $homeCityId}")
+        return Single.just(
+            homeCityId
+        )
 //            .flatMap { cityId ->
 //                if (cityId == 0L){
 //                    db.cityDao()
@@ -43,11 +48,19 @@ class HomeCityStoreImpl
                 it.onComplete()
             else
                 it.onError(Throwable("Couldn't save city ID to prefs"))
+            log("[saveHomeCity]: $city")
+            homeCityId = city
+            it.onComplete()
         }
 //        runBlocking {
 //            coroutineScope {
 //                prefs.edit().putLong(HOME_CITY_KEY, city).commit()
 //            }
 //        }
+    }
+
+    override fun closeStore() {
+        log("[closeStore]: $homeCityId")
+        prefs.edit().putLong(HOME_CITY_KEY, homeCityId).apply()
     }
 }

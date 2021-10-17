@@ -20,6 +20,7 @@ class DividerItemDecoration : ItemDecoration {
     constructor(context: Context) {
         val styledAttributes: TypedArray = context.obtainStyledAttributes(ATTRS)
         divider = styledAttributes.getDrawable(0)
+        divider?.setTint(R.color.white)
         styledAttributes.recycle()
     }
 

@@ -12,6 +12,6 @@ import javax.inject.Singleton
 @Module
 abstract class CitySearchModule {
     @Binds
-    @Reusable
+    @WeatherScope
     abstract fun bindsCitySearcher(searcher: CitySearcherImpl): CitySearcher
 }

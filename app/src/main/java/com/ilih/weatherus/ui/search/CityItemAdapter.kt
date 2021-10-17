@@ -16,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 
-class CityItemAdapter(private val cityList: ArrayList<CityDto>) :
+class CityItemAdapter(private val cityList: ArrayList<CityDto>, private val listener: Listener) :
     RecyclerView.Adapter<CityItemAdapter.ViewHolder>() {
 
     private val diffUtilScope = CoroutineScope(Dispatchers.Default)
@@ -24,11 +24,14 @@ class CityItemAdapter(private val cityList: ArrayList<CityDto>) :
     inner class ViewHolder(private val itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private val cityNameTextView: TextView = itemView.findViewById(R.id.textCityName)
-        private val countryNameTextView: TextView = itemView.findViewById(R.id.text)
+        private val countryNameTextView: TextView = itemView.findViewById(R.id.textCountryName)
 
         fun bind(city: CityDto){
-            cityNameTextView.text = city.name
+            cityNameTextView.text = city.name+","
             countryNameTextView.text = city.countryName
+            itemView.setOnClickListener {
+                listener.onCityClicked(city)
+            }
         }
 
     }
@@ -54,7 +57,7 @@ class CityItemAdapter(private val cityList: ArrayList<CityDto>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_daily_forecast, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_city, parent, false)
         )
     }
 
@@ -69,4 +72,7 @@ class CityItemAdapter(private val cityList: ArrayList<CityDto>) :
         newList: ArrayList<CityDto>
     ) : BaseDiffUtilCallback<CityDto>(oldList, newList)
 
+    interface Listener{
+        fun onCityClicked(city: CityDto)
+    }
 }

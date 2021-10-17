@@ -21,7 +21,8 @@ data class CityEntity(
     @ColumnInfo(name = "lat")
     val latitude: Float,
     @ColumnInfo(name = "lon")
-    val longitude: Float
+    val longitude: Float,
+    val favourite: Boolean = false
 )
 
 fun CityEntity.toDto() =
@@ -33,6 +34,7 @@ fun CityEntity.toDto() =
             countryCode = it.countryCode,
             countryName = it.countryName,
             latitude = it.latitude,
-            longitude = it.longitude
+            longitude = it.longitude,
+            favourite = it.favourite
         )
     }
