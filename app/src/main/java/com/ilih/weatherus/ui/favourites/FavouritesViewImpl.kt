@@ -26,6 +26,8 @@ class FavouritesViewImpl(
 
     override fun onFinishInflate(listener: FavouritesView.Listener) {
         this.listener = listener
+        initViews()
+        listener.inflated()
     }
 
     fun initViews() {

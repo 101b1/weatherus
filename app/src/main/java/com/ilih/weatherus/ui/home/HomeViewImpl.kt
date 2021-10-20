@@ -30,9 +30,9 @@ class HomeViewImpl(
     override fun onFinishInflate(listener: HomeView.Listener, targetCity: Long) {
         this.listener = listener
         viewModel.setTargetCity(targetCity)
-        listener.inflated()
         initViews()
         setListeners()
+        listener.inflated()
     }
 
     override fun initViews() {

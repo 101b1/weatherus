@@ -21,19 +21,9 @@ class FavouritesViewModelImpl
 
     private val _data = MutableLiveData<FavouriteEvent>()
     val data = _data
-    private val disposable: Disposable
+    private var disposable: Disposable? = null
 
-    init {
-        disposable = interactor.getObservable()
-            .doOnSubscribe {
-                interactor.getFavourites()
-            }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                _data.value = it
-            }
-    }
+
 
     override fun getData(): LiveData<FavouriteEvent> {
         return data
@@ -47,8 +37,20 @@ class FavouritesViewModelImpl
         router.navigateToHome(city.id)
     }
 
+    override fun inflated() {
+        disposable = interactor.getObservable()
+            .doOnSubscribe {
+                interactor.getFavourites()
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                _data.value = it
+            }
+    }
+
     override fun onCleared() {
         super.onCleared()
-        disposable.dispose()
+        disposable?.dispose()
     }
 }

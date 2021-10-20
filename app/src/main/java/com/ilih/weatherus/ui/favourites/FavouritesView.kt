@@ -7,5 +7,6 @@ interface FavouritesView {
 
     interface Listener{
         fun onFavouriteClicked(city: CityDto)
+        fun inflated()
     }
 }

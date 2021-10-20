@@ -28,8 +28,7 @@
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.ilih.weatherus.ui.search.SearchFragment"
-        android:label="SearchFragment" />
+        android:name="com.ilih.weatherus.ui.search.SearchFragment" />
     <fragment
         android:id="@+id/navigation_favourites"
         android:name="com.ilih.weatherus.ui.favourites.FavouritesFragment"
